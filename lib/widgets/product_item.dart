@@ -25,6 +25,21 @@ class ProductItem extends StatelessWidget {
         imageUrl,
         fit: BoxFit.cover,
       ),
+      footer: GridTileBar(
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.favorite),
+        ),
+        trailing: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.shopping_cart),
+        ),
+        backgroundColor: Colors.black54,
+        title: Text(
+          title,
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }
