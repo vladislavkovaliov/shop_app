@@ -5,6 +5,8 @@ import 'package:shop_app/models/product.dart';
 import 'package:shop_app/widgets/product_item.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
+  static String routeName = '/product-overview';
+
   final List<Product> loadedProducts = products;
 
   ProductOverviewScreen({

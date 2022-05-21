@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:shop_app/screens/product_detail_screen.dart';
+
 class ProductItem extends StatelessWidget {
   final String id;
 
@@ -18,6 +20,22 @@ class ProductItem extends StatelessWidget {
     required this.title,
   }) : super(key: key);
 
+  void handleTap(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      ProductDetailScreen.routeName,
+      arguments: {
+        'id': id,
+      },
+    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (ctx) => ProductDetailScreen(
+    //       title: title,
+    //     ),
+    //   ),
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -25,9 +43,12 @@ class ProductItem extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: GridTile(
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
+        child: GestureDetector(
+          onTap: () => handleTap(context),
+          child: Image.network(
+            imageUrl,
+            fit: BoxFit.cover,
+          ),
         ),
         footer: GridTileBar(
           leading: buildIconButton(theme, Icons.favorite, () {}),
