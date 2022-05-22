@@ -1,61 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/product.dart';
 
 import 'package:shop_app/screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
-  final String id;
-
-  // final String description;
-  final String imageUrl;
-  final String title;
-
-  // final double price;
-
-  // bool isFavorite;
-
   const ProductItem({
     Key? key,
-    required this.id,
-    required this.imageUrl,
-    required this.title,
   }) : super(key: key);
 
-  void handleTap(BuildContext context) {
+  void handleTap(BuildContext context, String productId) {
     Navigator.of(context).pushNamed(
       ProductDetailScreen.routeName,
       arguments: {
-        'id': id,
+        'id': productId,
       },
     );
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (ctx) => ProductDetailScreen(
-    //       title: title,
-    //     ),
-    //   ),
-    // );
+  }
+
+  void handleFavoriteToggle(Product product) {
+    product.toggleFavoriteStatus();
   }
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
     final theme = Theme.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: GridTile(
         child: GestureDetector(
-          onTap: () => handleTap(context),
+          onTap: () => handleTap(context, product.id),
           child: Image.network(
-            imageUrl,
+            product.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
         footer: GridTileBar(
-          leading: buildIconButton(theme, Icons.favorite, () {}),
-          trailing: buildIconButton(theme, Icons.shopping_cart, () {}),
+          leading: buildIconButton(
+            product,
+            theme,
+            product.isFavorite ? Icons.favorite : Icons.favorite_border,
+            handleFavoriteToggle,
+          ),
+          trailing: buildIconButton(
+            product,
+            theme,
+            Icons.shopping_cart,
+            () {},
+          ),
           backgroundColor: Colors.black87,
           title: Text(
-            title,
+            product.title,
             textAlign: TextAlign.center,
           ),
         ),
@@ -64,12 +61,13 @@ class ProductItem extends StatelessWidget {
   }
 
   IconButton buildIconButton(
+    Product product,
     ThemeData theme,
     IconData icon,
     Function onPressed,
   ) {
     return IconButton(
-      onPressed: () => onPressed,
+      onPressed: () => onPressed(product),
       icon: Icon(icon),
       color: theme.colorScheme.secondary,
     );

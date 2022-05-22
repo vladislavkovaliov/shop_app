@@ -21,10 +21,9 @@ class ProductsGridView extends StatelessWidget {
         mainAxisSpacing: 10.0,
       ),
       itemBuilder: (ctx, index) {
-        return ProductItem(
-          id: products[index].id,
-          imageUrl: products[index].imageUrl,
-          title: products[index].title,
+        return ChangeNotifierProvider(
+          create: (ctx) => products[index],
+          child: const ProductItem(),
         );
       },
       itemCount: products.length,
