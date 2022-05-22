@@ -14,4 +14,8 @@ class Products with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Product getProductById(String id) {
+    return _items.firstWhere((x) => x.id == id);
+  }
 }

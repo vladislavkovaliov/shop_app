@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (iPhone 11)",
+            "program": "lib/main.dart",
+            "deviceId": "0B970BD9-4410-4E68-B3E5-46F43BA02516",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
