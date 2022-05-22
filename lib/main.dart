@@ -27,11 +27,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
         initialRoute: ProductOverviewScreen.routeName,
-        routes: {
-          ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
-          ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
-        },
+        routes: buildRoutes,
       ),
     );
+  }
+
+  Map<String, WidgetBuilder> get buildRoutes {
+    return {
+      ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
+      ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
+    };
   }
 }
