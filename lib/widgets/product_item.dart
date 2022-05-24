@@ -24,7 +24,10 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    final product = Provider.of<Product>(
+      context,
+      listen: false,
+    );
     final theme = Theme.of(context);
 
     return ClipRRect(
@@ -38,11 +41,13 @@ class ProductItem extends StatelessWidget {
           ),
         ),
         footer: GridTileBar(
-          leading: buildIconButton(
-            product,
-            theme,
-            product.isFavorite ? Icons.favorite : Icons.favorite_border,
-            handleFavoriteToggle,
+          leading: Consumer<Product>(
+            builder: (ctx, product, child) => buildIconButton(
+              product,
+              theme,
+              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+              handleFavoriteToggle,
+            ),
           ),
           trailing: buildIconButton(
             product,
