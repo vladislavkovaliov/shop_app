@@ -4,26 +4,68 @@ import 'package:shop_app/mocks.dart';
 import 'package:shop_app/providers/product.dart';
 import 'package:shop_app/widgets/products_grid_view.dart';
 
-class ProductOverviewScreen extends StatelessWidget {
+enum FilterOptions {
+  favorites,
+  all,
+}
+
+class ProductOverviewScreen extends StatefulWidget {
   static String routeName = '/product-overview';
 
-  final List<Product> loadedProducts = products;
-
-  ProductOverviewScreen({
+  const ProductOverviewScreen({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<ProductOverviewScreen> createState() => _ProductOverviewScreenState();
+}
+
+class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
+  final List<Product> loadedProducts = products;
+
+  bool isShowFavoritesOnly = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      body: const ProductsGridView(),
+      appBar: buildAppBar(context),
+      body: ProductsGridView(isShowFavoritesOnly: isShowFavoritesOnly),
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       title: const Text('MyShop'),
+      actions: [
+        PopupMenuButton(
+          onSelected: (FilterOptions filterOption) {
+            switch (filterOption) {
+              case FilterOptions.favorites:
+                setState(() {
+                  isShowFavoritesOnly = true;
+                });
+                break;
+              case FilterOptions.all:
+              default:
+                setState(() {
+                  isShowFavoritesOnly = false;
+                });
+                break;
+            }
+          },
+          icon: const Icon(Icons.more_vert),
+          itemBuilder: (_) => [
+            const PopupMenuItem(
+              value: FilterOptions.favorites,
+              child: Text("Favorites"),
+            ),
+            const PopupMenuItem(
+              value: FilterOptions.all,
+              child: Text("All"),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

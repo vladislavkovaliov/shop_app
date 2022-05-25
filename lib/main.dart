@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => Products(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'MyShop',
         theme: ThemeData(
           fontFamily: "Lato",
           colorScheme: themeData.colorScheme.copyWith(
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> get buildRoutes {
     return {
-      ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
+      ProductOverviewScreen.routeName: (ctx) => const ProductOverviewScreen(),
       ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
     };
   }
