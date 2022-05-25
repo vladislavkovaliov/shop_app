@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
+
 import 'package:provider/provider.dart';
 
-import 'package:shop_app/providers/products.dart';
+import 'package:shop_app/providers/products/products.dart';
 import 'package:shop_app/widgets/product_item.dart';
 
 class ProductsGridView extends StatelessWidget {
