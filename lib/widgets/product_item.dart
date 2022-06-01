@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/products/product.dart';
 
 import 'package:shop_app/screens/product_detail_screen.dart';
@@ -22,9 +23,17 @@ class ProductItem extends StatelessWidget {
     product.toggleFavoriteStatus();
   }
 
+  void handleShoppingCard(Cart cart, Product product) {
+    cart.addItem(product.id, product.price, product.title);
+  }
+
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(
+      context,
+      listen: false,
+    );
+    final cart = Provider.of<Cart>(
       context,
       listen: false,
     );
@@ -49,11 +58,12 @@ class ProductItem extends StatelessWidget {
               handleFavoriteToggle,
             ),
           ),
-          trailing: buildIconButton(
+          trailing: buildTrailingButton(
+            cart,
             product,
             theme,
             Icons.shopping_cart,
-            () {},
+            handleShoppingCard,
           ),
           backgroundColor: Colors.black87,
           title: Text(
@@ -62,6 +72,20 @@ class ProductItem extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  IconButton buildTrailingButton(
+    Cart cart,
+    Product product,
+    ThemeData theme,
+    IconData icon,
+    Function onPressed,
+  ) {
+    return IconButton(
+      icon: Icon(icon),
+      color: theme.colorScheme.secondary,
+      onPressed: () => onPressed(cart, product),
     );
   }
 
