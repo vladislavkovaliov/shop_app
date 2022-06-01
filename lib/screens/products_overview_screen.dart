@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/mocks.dart';
 import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/products/product.dart';
+import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/products_grid_view.dart';
 
@@ -71,10 +72,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         Consumer<Cart>(
           builder: (_, cart, _child) => Badge(
             child: _child!,
-            value: cart.itemCount().toString(),
+            value: cart.itemCount.toString(),
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(CartScreen.routeName);
+            },
             icon: const Icon(Icons.shopping_cart),
           ),
         ),
