@@ -33,4 +33,10 @@ class Products with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void deleteProduct(String productId) {
+    _items.removeWhere((x) => x.id == productId);
+
+    notifyListeners();
+  }
 }
