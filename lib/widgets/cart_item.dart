@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart/cart.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
@@ -7,16 +9,52 @@ class CartItem extends StatelessWidget {
   final double price;
   final int quantity;
 
+  final String productKey;
+
   const CartItem({
     Key? key,
     required this.id,
     required this.title,
     required this.price,
+    required this.productKey,
     required this.quantity,
   }) : super(key: key);
 
+  void handleDismissed(
+    BuildContext context,
+    DismissDirection direction,
+    String id,
+  ) {
+    final cartContainer = Provider.of<Cart>(context, listen: false);
+    cartContainer.removeItem(id);
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Dismissible(
+      key: ValueKey(id),
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) =>
+          handleDismissed(context, direction, productKey),
+      background: Container(
+        color: Theme.of(context).colorScheme.error,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 30.0,
+        ),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20.0),
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15.0,
+          vertical: 4.0,
+        ),
+      ),
+      child: buildCart(),
+    );
+  }
+
+  Card buildCart() {
     return Card(
       margin: const EdgeInsets.symmetric(
         horizontal: 15.0,
@@ -35,7 +73,7 @@ class CartItem extends StatelessWidget {
           ),
           title: Text(title),
           subtitle: Text(' Total: \$${(price * quantity)}'),
-          trailing: Text('${quantity} x'),
+          trailing: Text('$quantity x'),
         ),
       ),
     );

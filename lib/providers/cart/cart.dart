@@ -13,10 +13,10 @@ class Cart with ChangeNotifier {
   }
 
   double get totalAmount {
-    var total = 0.0;
+    double total = 0.0;
 
     _items.forEach((key, value) {
-      total += value.quantity;
+      total += value.price * value.quantity;
     });
 
     return total;
@@ -44,6 +44,12 @@ class Cart with ChangeNotifier {
         ),
       );
     }
+
+    notifyListeners();
+  }
+
+  void removeItem(String id) {
+    _items.remove(id);
 
     notifyListeners();
   }
