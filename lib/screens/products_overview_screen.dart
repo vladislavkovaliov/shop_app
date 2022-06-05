@@ -5,6 +5,7 @@ import 'package:shop_app/mocks.dart';
 import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/products/product.dart';
 import 'package:shop_app/screens/cart_screen.dart';
+import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/products_grid_view.dart';
 
@@ -34,6 +35,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: ProductsGridView(isShowFavoritesOnly: isShowFavoritesOnly),
+      drawer: AppDrawer(),
     );
   }
 
