@@ -35,7 +35,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: ProductsGridView(isShowFavoritesOnly: isShowFavoritesOnly),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 

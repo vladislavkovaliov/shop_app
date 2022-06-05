@@ -23,7 +23,7 @@ class OrdersScreen extends StatelessWidget {
         },
         itemCount: orders.orders.length,
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }
