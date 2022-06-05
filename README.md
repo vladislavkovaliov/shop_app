@@ -16,5 +16,11 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 ## Demo
-### Overview
-![Alt Text](overview.gif)
+
+| Feature | Demo Gif |
+| --- | ----------- |
+| Overview | ![Alt Text](overview.gif) |
+| Edit Product | ![Alt Text](edit-product.gif) |
+| Edit and Delete Product | ![Alt Text](edit-and-delete-product.gif) |
+| Alert Dialog | ![Alt Text](alert-dialog.gif) |
+| Snackbar | ![Alt Text](snackbar.gif) |
