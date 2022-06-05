@@ -24,4 +24,13 @@ class Products with ChangeNotifier {
   Product getProductById(String id) {
     return _items.firstWhere((x) => x.id == id);
   }
+
+  void updateProduct(String productId, Product product) {
+    final productIdx = _items.indexWhere((x) => x.id == productId);
+
+    if (productIdx >= 0) {
+      _items[productIdx] = product;
+      notifyListeners();
+    }
+  }
 }

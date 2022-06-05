@@ -28,7 +28,7 @@ class ProductItem extends StatelessWidget {
     Cart cart,
     Product product,
   ) {
-    cart.addItem(product.id, product.price, product.title);
+    cart.addItem(product.id.toString(), product.price, product.title);
 
     scaffold.hideCurrentSnackBar();
     scaffold.showSnackBar(
@@ -41,7 +41,7 @@ class ProductItem extends StatelessWidget {
         action: SnackBarAction(
           label: "UNDO",
           onPressed: () {
-            cart.removeSingleItem(product.id);
+            cart.removeSingleItem(product.id.toString());
           },
         ),
       ),
@@ -65,7 +65,7 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(10.0),
       child: GridTile(
         child: GestureDetector(
-          onTap: () => handleTap(context, product.id),
+          onTap: () => handleTap(context, product.id.toString()),
           child: Image.network(
             product.imageUrl,
             fit: BoxFit.cover,
