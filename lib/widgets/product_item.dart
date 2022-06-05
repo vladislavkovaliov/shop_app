@@ -23,8 +23,29 @@ class ProductItem extends StatelessWidget {
     product.toggleFavoriteStatus();
   }
 
-  void handleShoppingCard(Cart cart, Product product) {
+  void handleShoppingCard(
+    ScaffoldMessengerState scaffold,
+    Cart cart,
+    Product product,
+  ) {
     cart.addItem(product.id, product.price, product.title);
+
+    scaffold.hideCurrentSnackBar();
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text(
+          "Added item to cart!",
+          textAlign: TextAlign.center,
+        ),
+        duration: const Duration(seconds: 2),
+        action: SnackBarAction(
+          label: "UNDO",
+          onPressed: () {
+            cart.removeSingleItem(product.id);
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -38,6 +59,7 @@ class ProductItem extends StatelessWidget {
       listen: false,
     );
     final theme = Theme.of(context);
+    final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
@@ -59,6 +81,7 @@ class ProductItem extends StatelessWidget {
             ),
           ),
           trailing: buildTrailingButton(
+            scaffold,
             cart,
             product,
             theme,
@@ -76,6 +99,7 @@ class ProductItem extends StatelessWidget {
   }
 
   IconButton buildTrailingButton(
+    ScaffoldMessengerState scaffold,
     Cart cart,
     Product product,
     ThemeData theme,
@@ -85,7 +109,7 @@ class ProductItem extends StatelessWidget {
     return IconButton(
       icon: Icon(icon),
       color: theme.colorScheme.secondary,
-      onPressed: () => onPressed(cart, product),
+      onPressed: () => onPressed(scaffold, cart, product),
     );
   }
 
