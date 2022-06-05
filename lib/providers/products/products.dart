@@ -16,7 +16,7 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    _items.add(product);
+    _items.insert(0, product);
 
     notifyListeners();
   }
