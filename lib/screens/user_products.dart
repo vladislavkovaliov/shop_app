@@ -10,6 +10,28 @@ class UserProductsScreen extends StatelessWidget {
 
   const UserProductsScreen({Key? key}) : super(key: key);
 
+  Future<void> handleRefresh(BuildContext context) async {
+    try {
+      await Provider.of<Products>(context, listen: false).fetchAndSetProduct();
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('An error occurred!'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Okay'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsContainer = Provider.of<Products>(context);
@@ -30,24 +52,25 @@ class UserProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-
-      // body: null,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemBuilder: (_, i) {
-            return Column(
-              children: [
-                UserProductItem(
-                  productId: productsContainer.items[i].id.toString(),
-                  productTitle: productsContainer.items[i].title,
-                  productImage: productsContainer.items[i].imageUrl,
-                ),
-                const Divider(),
-              ],
-            );
-          },
-          itemCount: productsContainer.items.length,
+      body: RefreshIndicator(
+        onRefresh: () => handleRefresh(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemBuilder: (_, i) {
+              return Column(
+                children: [
+                  UserProductItem(
+                    productId: productsContainer.items[i].id.toString(),
+                    productTitle: productsContainer.items[i].title,
+                    productImage: productsContainer.items[i].imageUrl,
+                  ),
+                  const Divider(),
+                ],
+              );
+            },
+            itemCount: productsContainer.items.length,
+          ),
         ),
       ),
     );
