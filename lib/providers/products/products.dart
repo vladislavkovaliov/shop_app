@@ -117,9 +117,20 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String productId) {
-    _items.removeWhere((x) => x.id == productId);
+  Future<void> deleteProduct(String productId) async {
+    final existingProductIdx = _items.indexWhere((x) => x.id == productId);
+    final existingProduct = _items[existingProductIdx];
 
-    notifyListeners();
+    try {
+      final url = Uri.parse(URL + 'products/$productId.json');
+
+      _items.removeAt(existingProductIdx);
+      await http.delete(url);
+
+      notifyListeners();
+    } catch (error) {
+      _items.insert(0, existingProduct);
+      throw error;
+    }
   }
 }

@@ -28,3 +28,4 @@ samples, guidance on mobile development, and a full API reference.
 | Fetch product from FB | ![Alt Text](fetch-product-fb.gif) |
 | Refresh Indicator | ![Alt Text](refresh-indicator.gif) |
 | Patch Product | ![Alt Text](patch-product.gif) |
+| Delete Product | ![Alt Text](delete-product.gif) |
