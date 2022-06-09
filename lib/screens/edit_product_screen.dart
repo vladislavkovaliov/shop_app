@@ -23,6 +23,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _form = GlobalKey<FormState>();
 
   var _isInit = true;
+  var _isLoading = false;
 
   var _editedProduct = Product(
     id: null,
@@ -33,7 +34,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   );
   var _initValues = {
     'title': '',
-    'price': 0,
+    'price': '',
     'description': '',
     'imageUrl': '',
   };
@@ -48,15 +49,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final productId = ModalRoute.of(context)!.settings.arguments as String;
+      final productId = ModalRoute.of(context)?.settings.arguments;
+
       if (productId != null) {
         final product =
-            Provider.of<Products>(context).getProductById(productId);
+            Provider.of<Products>(context).getProductById(productId as String);
 
         _editedProduct = product;
         _initValues = {
           'title': _editedProduct.title,
-          'price': _editedProduct.price,
+          'price': _editedProduct.price.toString(),
           'description': _editedProduct.description,
           'imageUrl': _editedProduct.imageUrl,
         };
@@ -82,7 +84,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _form.currentState!.validate();
 
     if (!isValid) {
@@ -91,13 +93,46 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     _form.currentState!.save();
 
+    setState(() {
+      _isLoading = true;
+    });
+
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id.toString(), _editedProduct);
+
+      setState(() {
+        _isLoading = false;
+      });
+
       Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
-      Navigator.of(context).pop();
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('An error occurred!'),
+            content: Text(error.toString()),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Okay'),
+              ),
+            ],
+          ),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -114,44 +149,48 @@ class _EditProductScreenState extends State<EditProductScreen> {
             buildSaveFormButton(),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _form,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  buildTextFormFieldTitle(context),
-                  buildTextFormFieldPrice(context),
-                  buildTextFormFieldDescription(context),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        margin: const EdgeInsets.only(top: 8),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        child: buildFallbackOrImage(),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: buildTextFormFieldImageUrl(),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _form,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        buildTextFormFieldTitle(context),
+                        buildTextFormFieldPrice(context),
+                        buildTextFormFieldDescription(context),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              margin: const EdgeInsets.only(top: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              child: buildFallbackOrImage(),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 6.0),
+                                child: buildTextFormFieldImageUrl(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
