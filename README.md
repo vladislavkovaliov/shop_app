@@ -25,3 +25,4 @@ samples, guidance on mobile development, and a full API reference.
 | Alert Dialog | ![Alt Text](alert-dialog.gif) |
 | Snackbar | ![Alt Text](snackbar.gif) |
 | Adding product into FB | ![Alt Text](add-product-to-firebase-gif.gif) |
+| Fetch product from FB | ![Alt Text](fetch-product-fb.gif) |
