@@ -27,3 +27,4 @@ samples, guidance on mobile development, and a full API reference.
 | Adding product into FB | ![Alt Text](add-product-to-firebase-gif.gif) |
 | Fetch product from FB | ![Alt Text](fetch-product-fb.gif) |
 | Refresh Indicator | ![Alt Text](refresh-indicator.gif) |
+| Patch Product | ![Alt Text](patch-product.gif) |

@@ -5,7 +5,7 @@ import 'package:shop_app/providers/products/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
 
-const URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/products.json';
+const URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
@@ -25,7 +25,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProduct() async {
-    var url = Uri.parse(URL);
+    var url = Uri.parse(URL + 'products.json');
 
     try {
       final response = await http.get(url);
@@ -53,7 +53,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    var url = Uri.parse(URL);
+    var url = Uri.parse(URL + 'products.json');
 
     try {
       final response = await http.post(
@@ -89,12 +89,31 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String productId, Product product) {
+  Future<void> updateProduct(String productId, Product product) async {
     final productIdx = _items.indexWhere((x) => x.id == productId);
 
     if (productIdx >= 0) {
-      _items[productIdx] = product;
-      notifyListeners();
+      try {
+        final url = Uri.parse(URL + 'products/$productId.json');
+
+        await http.patch(
+          url,
+          body: json.encode(
+            {
+              'title': product.title,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'price': product.price,
+            },
+          ),
+        );
+
+        _items[productIdx] = product;
+
+        notifyListeners();
+      } catch (error) {
+        throw error;
+      }
     }
   }
 
