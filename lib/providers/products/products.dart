@@ -6,8 +6,10 @@ import 'package:shop_app/providers/products/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
 
+final URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/products.json';
+
 class Products with ChangeNotifier {
-  final List<Product> _items = products;
+  List<Product> _items = [];
 
   bool isShowFavoritesOnly = false;
 
@@ -23,9 +25,37 @@ class Products with ChangeNotifier {
     return _items.firstWhere((x) => x.id == id);
   }
 
+  Future<void> fetchAndSetProduct() async {
+    var url = Uri.parse(URL);
+
+    try {
+      final response = await http.get(url);
+      final bodyJson = json.decode(response.body) as Map<String, dynamic>;
+
+      final List<Product> loadedProducts = [];
+
+      bodyJson.forEach((prodId, prodValue) {
+        loadedProducts.add(Product(
+          id: prodId,
+          title: prodValue['title'],
+          description: prodValue['description'],
+          price: prodValue['price'],
+          isFavorite: prodValue['isFavorite'],
+          imageUrl: prodValue['imageUrl'],
+        ));
+      });
+
+      _items = loadedProducts;
+
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   Future<void> addProduct(Product product) async {
-    var url = Uri.parse(
-        'https://shop-app-ba21e-default-rtdb.firebaseio.com/products.json');
+    var url = Uri.parse(URL);
+
     try {
       final response = await http.post(
         url,

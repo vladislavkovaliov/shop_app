@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/mocks.dart';
 import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/products/product.dart';
+import 'package:shop_app/providers/products/products.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/badge.dart';
@@ -29,12 +30,63 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   final List<Product> loadedProducts = products;
 
   bool isShowFavoritesOnly = false;
+  bool _isInit = true;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        Provider.of<Products>(context).fetchAndSetProduct().then((_) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      } catch (error) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('An error occurred!'),
+            content: Text(error.toString()),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Okay'),
+              ),
+            ],
+          ),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+
+    _isInit = false;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: ProductsGridView(isShowFavoritesOnly: isShowFavoritesOnly),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGridView(isShowFavoritesOnly: isShowFavoritesOnly),
       drawer: const AppDrawer(),
     );
   }
