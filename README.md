@@ -24,3 +24,4 @@ samples, guidance on mobile development, and a full API reference.
 | Edit and Delete Product | ![Alt Text](edit-and-delete-product.gif) |
 | Alert Dialog | ![Alt Text](alert-dialog.gif) |
 | Snackbar | ![Alt Text](snackbar.gif) |
+| Adding product into FB | ![Alt Text](add-product-to-firebase-gif.gif) |

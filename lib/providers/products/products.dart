@@ -41,6 +41,7 @@ class Products with ChangeNotifier {
       );
 
       var bodyJson = json.decode(response.body);
+
       _items.insert(
         0,
         Product(
