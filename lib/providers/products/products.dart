@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shop_app/mocks.dart';
 import 'package:shop_app/providers/products/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
 
-final URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/products.json';
+const URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/products.json';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];

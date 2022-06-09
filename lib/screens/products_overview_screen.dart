@@ -66,10 +66,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             ],
           ),
         );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
       }
     }
 
