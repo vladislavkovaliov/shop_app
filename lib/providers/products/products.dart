@@ -13,8 +13,9 @@ class Products with ChangeNotifier {
   bool isShowFavoritesOnly = false;
 
   final String authToken;
+  final String userId;
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -39,6 +40,11 @@ class Products with ChangeNotifier {
         throw HttpException(bodyJson['error']);
       }
 
+      final urlUserFavorite =
+          Uri.parse(baseUrl + 'userFavorite/$userId.json?auth=$authToken');
+      final favoriteResponse = await http.get(urlUserFavorite);
+      final favoriteData = json.decode(favoriteResponse.body);
+
       final List<Product> loadedProducts = [];
 
       bodyJson.forEach((prodId, prodValue) {
@@ -47,7 +53,8 @@ class Products with ChangeNotifier {
           title: prodValue['title'],
           description: prodValue['description'],
           price: prodValue['price'],
-          isFavorite: prodValue['isFavorite'],
+          isFavorite:
+              favoriteData == null ? false : favoriteData[prodId]['isFavorite'],
           imageUrl: prodValue['imageUrl'],
         ));
       });
@@ -72,7 +79,6 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite,
           },
         ),
       );
