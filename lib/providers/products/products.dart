@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/config.dart';
 import 'package:shop_app/models/http_exception.dart';
 import 'package:shop_app/providers/products/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
-
-const URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
@@ -26,7 +25,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProduct() async {
-    var url = Uri.parse(URL + 'products.json');
+    var url = Uri.parse(baseUrl + 'products.json');
 
     try {
       final response = await http.get(url);
@@ -54,7 +53,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    var url = Uri.parse(URL + 'products.json');
+    var url = Uri.parse(baseUrl + 'products.json');
 
     try {
       final response = await http.post(
@@ -95,7 +94,7 @@ class Products with ChangeNotifier {
 
     if (productIdx >= 0) {
       try {
-        final url = Uri.parse(URL + 'products/$productId.json');
+        final url = Uri.parse(baseUrl + 'products/$productId.json');
 
         await http.patch(
           url,
@@ -122,7 +121,7 @@ class Products with ChangeNotifier {
     final existingProductIdx = _items.indexWhere((x) => x.id == productId);
     Product? existingProduct = _items[existingProductIdx];
 
-    final url = Uri.parse(URL + 'products/$productId.json');
+    final url = Uri.parse(baseUrl + 'products/$productId.json');
 
     _items.removeAt(existingProductIdx);
     notifyListeners();

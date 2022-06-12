@@ -44,7 +44,7 @@ class _OrderButtonState extends State<OrderButton> {
                       error.toString(),
                       textAlign: TextAlign.center,
                     ),
-                    duration: Duration(seconds: 2),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
               }

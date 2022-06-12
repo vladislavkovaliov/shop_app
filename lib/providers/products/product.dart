@@ -1,12 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/config.dart';
 
 import 'dart:core';
 import 'dart:convert';
 
 import 'package:shop_app/models/http_exception.dart';
-
-const URL = 'https://shop-app-ba21e-default-rtdb.firebaseio.com/';
 
 class Product with ChangeNotifier {
   final String? id;
@@ -33,7 +32,7 @@ class Product with ChangeNotifier {
     final newFavoriteStatus = !prevFavoriteStatus;
 
     try {
-      final url = Uri.parse(URL + 'products/$id.json');
+      final url = Uri.parse(baseUrl + 'products/$id.json');
 
       isFavorite = newFavoriteStatus;
       notifyListeners();

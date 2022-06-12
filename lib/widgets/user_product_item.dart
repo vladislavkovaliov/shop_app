@@ -52,7 +52,7 @@ class UserProductItem extends StatelessWidget {
                         error.toString(),
                         textAlign: TextAlign.center,
                       ),
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 }
