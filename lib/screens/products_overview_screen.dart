@@ -39,16 +39,15 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     if (_isInit) {
       try {
         setState(() {
           _isLoading = true;
         });
-        Provider.of<Products>(context).fetchAndSetProduct().then((_) {
-          setState(() {
-            _isLoading = false;
-          });
+        await Provider.of<Products>(context).fetchAndSetProduct();
+        setState(() {
+          _isLoading = false;
         });
       } catch (error) {
         showDialog(

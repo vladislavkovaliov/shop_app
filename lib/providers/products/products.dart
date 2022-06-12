@@ -31,6 +31,10 @@ class Products with ChangeNotifier {
       final response = await http.get(url);
       final bodyJson = json.decode(response.body) as Map<String, dynamic>;
 
+      if (response.statusCode >= 400) {
+        throw HttpException(bodyJson['error']);
+      }
+
       final List<Product> loadedProducts = [];
 
       bodyJson.forEach((prodId, prodValue) {
@@ -71,6 +75,10 @@ class Products with ChangeNotifier {
 
       var bodyJson = json.decode(response.body);
 
+      if (response.statusCode >= 400) {
+        throw HttpException(bodyJson['error']);
+      }
+
       _items.insert(
         0,
         Product(
@@ -96,7 +104,7 @@ class Products with ChangeNotifier {
       try {
         final url = Uri.parse(baseUrl + 'products/$productId.json');
 
-        await http.patch(
+        final response = await http.patch(
           url,
           body: json.encode(
             {
@@ -107,6 +115,12 @@ class Products with ChangeNotifier {
             },
           ),
         );
+
+        var bodyJson = json.decode(response.body);
+
+        if (response.statusCode >= 400) {
+          throw HttpException(bodyJson['error']);
+        }
 
         _items[productIdx] = product;
 
@@ -127,6 +141,12 @@ class Products with ChangeNotifier {
     notifyListeners();
 
     final response = await http.delete(url);
+
+    var bodyJson = json.decode(response.body);
+
+    if (response.statusCode >= 400) {
+      throw HttpException(bodyJson['error']);
+    }
 
     if (response.statusCode >= 200) {
       _items.insert(existingProductIdx, existingProduct);
