@@ -27,12 +27,12 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String authToken) async {
     final prevFavoriteStatus = isFavorite;
     final newFavoriteStatus = !prevFavoriteStatus;
 
     try {
-      final url = Uri.parse(baseUrl + 'products/$id.json');
+      final url = Uri.parse(baseUrl + 'products/$id.json?auth=$authToken');
 
       isFavorite = newFavoriteStatus;
       notifyListeners();

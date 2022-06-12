@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth/auth.dart';
 import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/products/product.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
@@ -21,9 +22,10 @@ class ProductItem extends StatelessWidget {
   Future<void> handleFavoriteToggle(
     ScaffoldMessengerState scaffold,
     Product product,
+    Auth auth,
   ) async {
     try {
-      await product.toggleFavoriteStatus();
+      await product.toggleFavoriteStatus(auth.token.toString());
     } catch (error) {
       scaffold.hideCurrentSnackBar();
       scaffold.showSnackBar(
@@ -74,6 +76,7 @@ class ProductItem extends StatelessWidget {
       listen: false,
     );
     final theme = Theme.of(context);
+    final auth = Provider.of<Auth>(context);
     final ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
 
     return ClipRRect(
@@ -91,6 +94,7 @@ class ProductItem extends StatelessWidget {
             builder: (ctx, product, child) => buildIconButton(
               scaffold,
               product,
+              auth,
               theme,
               product.isFavorite ? Icons.favorite : Icons.favorite_border,
               handleFavoriteToggle,
@@ -132,12 +136,13 @@ class ProductItem extends StatelessWidget {
   IconButton buildIconButton(
     ScaffoldMessengerState scaffold,
     Product product,
+    Auth auth,
     ThemeData theme,
     IconData icon,
     Function onPressed,
   ) {
     return IconButton(
-      onPressed: () => onPressed(scaffold, product),
+      onPressed: () => onPressed(scaffold, product, auth),
       icon: Icon(icon),
       color: theme.colorScheme.secondary,
     );
