@@ -33,3 +33,4 @@ samples, guidance on mobile development, and a full API reference.
 | Optimistic Updating Favorite | ![Alt Text](updating-favorite.gif) |
 | Optimistic Updating Favorite | ![Alt Text](order-fb.gif) |
 | Fetch Orders | ![Alt Text](fetch-orders.gif) |
+| Auth Signup | ![Alt Text](auth-signup.gif) |
