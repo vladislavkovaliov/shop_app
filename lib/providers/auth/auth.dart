@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/config.dart';
 import 'package:shop_app/keys.dart';
+import 'package:shop_app/models/http_exception.dart';
 
 enum AuthenticateMethod {
   Signup,
@@ -43,6 +44,11 @@ class Auth with ChangeNotifier {
           'returnSecureToken': true,
         }),
       );
+
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != null) {
+        throw HttpException(responseData['error']['message']);
+      }
     } catch (error) {
       throw error;
     }
