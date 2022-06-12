@@ -29,3 +29,4 @@ samples, guidance on mobile development, and a full API reference.
 | Refresh Indicator | ![Alt Text](refresh-indicator.gif) |
 | Patch Product | ![Alt Text](patch-product.gif) |
 | Delete Product | ![Alt Text](delete-product.gif) |
+| Optimistic Deleting Product | ![Alt Text](optimistic-deleting.gif) |
