@@ -8,9 +8,13 @@ import 'package:http/http.dart' as http;
 import 'dart:core';
 
 class Products with ChangeNotifier {
-  List<Product> _items = [];
+  List<Product> _items;
 
   bool isShowFavoritesOnly = false;
+
+  final String authToken;
+
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -25,7 +29,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProduct() async {
-    var url = Uri.parse(baseUrl + 'products.json');
+    var url = Uri.parse(baseUrl + 'products.json?auth=$authToken');
 
     try {
       final response = await http.get(url);
@@ -57,7 +61,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    var url = Uri.parse(baseUrl + 'products.json');
+    var url = Uri.parse(baseUrl + 'products.json?auth=$authToken');
 
     try {
       final response = await http.post(
@@ -102,7 +106,8 @@ class Products with ChangeNotifier {
 
     if (productIdx >= 0) {
       try {
-        final url = Uri.parse(baseUrl + 'products/$productId.json');
+        final url =
+            Uri.parse(baseUrl + 'products/$productId.json?auth=$authToken');
 
         final response = await http.patch(
           url,
@@ -135,7 +140,7 @@ class Products with ChangeNotifier {
     final existingProductIdx = _items.indexWhere((x) => x.id == productId);
     Product? existingProduct = _items[existingProductIdx];
 
-    final url = Uri.parse(baseUrl + 'products/$productId.json');
+    final url = Uri.parse(baseUrl + 'products/$productId.json?auth=$authToken');
 
     _items.removeAt(existingProductIdx);
     notifyListeners();

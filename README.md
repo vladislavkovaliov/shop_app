@@ -35,3 +35,4 @@ samples, guidance on mobile development, and a full API reference.
 | Fetch Orders | ![Alt Text](fetch-orders.gif) |
 | Auth Signup | ![Alt Text](auth-signup.gif) |
 | Handling Errors | ![Alt Text](handling-error.gif) |
+| Auth Products | ![Alt Text](auth-products.gif) |
