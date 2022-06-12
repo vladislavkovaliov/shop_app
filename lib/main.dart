@@ -38,18 +38,25 @@ class MyApp extends StatelessWidget {
           create: (ctx) => Orders(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'MyShop',
-        theme: ThemeData(
-          fontFamily: "Lato",
-          colorScheme: themeData.colorScheme.copyWith(
-            primary: Colors.blue,
-            secondary: Colors.deepOrange,
-          ),
-        ),
-        initialRoute: AuthScreen.routeName,
-        routes: buildRoutes,
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) {
+          print(auth.isAuth);
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'MyShop',
+            theme: ThemeData(
+              fontFamily: "Lato",
+              colorScheme: themeData.colorScheme.copyWith(
+                primary: Colors.blue,
+                secondary: Colors.deepOrange,
+              ),
+            ),
+            initialRoute: auth.isAuth
+                ? ProductOverviewScreen.routeName
+                : AuthScreen.routeName,
+            routes: buildRoutes,
+          );
+        },
       ),
     );
   }

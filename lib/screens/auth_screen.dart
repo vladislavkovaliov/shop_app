@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/http_exception.dart';
 import 'package:shop_app/providers/auth/auth.dart';
+import 'package:shop_app/screens/products_overview_screen.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -144,6 +145,8 @@ class _AuthCardState extends State<AuthCard> {
           _authData['password'].toString(),
         );
       }
+
+      Navigator.of(context).pushNamed(ProductOverviewScreen.routeName);
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed.';
 
