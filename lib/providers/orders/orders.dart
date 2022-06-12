@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:core';
 import 'dart:convert';
 
+import 'package:shop_app/models/http_exception.dart';
+
 class OrderItem {
   final String id;
 
@@ -24,14 +26,46 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final List<OrderItem> _orders = [];
+  List<OrderItem> _orders = [];
 
   List<OrderItem> get orders {
     return [..._orders];
   }
 
+  Future<void> fetchAndSetOrders() async {
+    try {
+      final url = Uri.parse(baseUrl + 'orders.json');
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      final List<OrderItem> loadedOrders = [];
+
+      extractedData.forEach((orderId, order) {
+        loadedOrders.add(
+          OrderItem(
+            id: orderId,
+            amount: order['amount'],
+            dataTime: DateTime.parse(order['dateTime']),
+            products: (order['products'] as List<dynamic>)
+                .map((x) => CartItem(
+                    id: x['id'],
+                    title: x['title'],
+                    quantity: x['quantity'],
+                    price: x['price']))
+                .toList(),
+          ),
+        );
+      });
+
+      _orders = loadedOrders.reversed.toList();
+      notifyListeners();
+    } catch (error) {
+      throw HttpException("Orders loading is failed.");
+    }
+  }
+
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
-    var url = Uri.parse(baseUrl + 'orders.json');
+    final url = Uri.parse(baseUrl + 'orders.json');
 
     try {
       final timestamp = DateTime.now();

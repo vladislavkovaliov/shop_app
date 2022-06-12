@@ -32,3 +32,4 @@ samples, guidance on mobile development, and a full API reference.
 | Optimistic Deleting Product | ![Alt Text](optimistic-deleting.gif) |
 | Optimistic Updating Favorite | ![Alt Text](updating-favorite.gif) |
 | Optimistic Updating Favorite | ![Alt Text](order-fb.gif) |
+| Fetch Orders | ![Alt Text](fetch-orders.gif) |
