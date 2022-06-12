@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/orders/orders.dart';
 import 'package:shop_app/widgets/cart_item.dart';
+import 'package:shop_app/widgets/order_button.dart';
 
 class CartScreen extends StatelessWidget {
   static String routeName = '/cart';
@@ -48,13 +49,7 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
-          TextButton(
-            onPressed: () {
-              orders.addOrder(cart.items.values.toList(), cart.totalAmount);
-              cart.clear();
-            },
-            child: const Text("Order Now"),
-          ),
+          OrderButton(cart: cart, orders: orders),
           const SizedBox(height: 10.0),
           Expanded(
             child: ListView.builder(

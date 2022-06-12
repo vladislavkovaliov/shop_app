@@ -47,9 +47,9 @@ class UserProductItem extends StatelessWidget {
                 } catch (error) {
                   scaffold.hideCurrentSnackBar();
                   scaffold.showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text(
-                        "Deleting failed!",
+                        error.toString(),
                         textAlign: TextAlign.center,
                       ),
                       duration: Duration(seconds: 2),
