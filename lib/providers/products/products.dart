@@ -49,7 +49,7 @@ class Products with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
@@ -86,7 +86,7 @@ class Products with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
@@ -113,7 +113,7 @@ class Products with ChangeNotifier {
 
         notifyListeners();
       } catch (error) {
-        throw error;
+        rethrow;
       }
     }
   }
