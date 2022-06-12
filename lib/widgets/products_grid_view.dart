@@ -13,6 +13,28 @@ class ProductsGridView extends StatelessWidget {
     required this.isShowFavoritesOnly,
   }) : super(key: key);
 
+  Future<void> handleRefresh(BuildContext context) async {
+    try {
+      await Provider.of<Products>(context, listen: false).fetchAndSetProduct();
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('An error occurred!'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Okay'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsContainer = Provider.of<Products>(context);
@@ -20,21 +42,24 @@ class ProductsGridView extends StatelessWidget {
         ? productsContainer.favoritesItems
         : productsContainer.items;
 
-    return GridView.builder(
-      padding: const EdgeInsets.all(10.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
+    return RefreshIndicator(
+      onRefresh: () => handleRefresh(context),
+      child: GridView.builder(
+        padding: const EdgeInsets.all(10.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+        ),
+        itemBuilder: (ctx, index) {
+          return ChangeNotifierProvider.value(
+            value: products[index],
+            child: const ProductItem(),
+          );
+        },
+        itemCount: products.length,
       ),
-      itemBuilder: (ctx, index) {
-        return ChangeNotifierProvider.value(
-          value: products[index],
-          child: const ProductItem(),
-        );
-      },
-      itemCount: products.length,
     );
   }
 }

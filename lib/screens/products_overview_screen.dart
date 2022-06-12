@@ -92,21 +92,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       title: const Text('MyShop'),
       actions: [
         PopupMenuButton(
-          onSelected: (FilterOptions filterOption) {
-            switch (filterOption) {
-              case FilterOptions.favorites:
-                setState(() {
-                  isShowFavoritesOnly = true;
-                });
-                break;
-              case FilterOptions.all:
-              default:
-                setState(() {
-                  isShowFavoritesOnly = false;
-                });
-                break;
-            }
-          },
+          onSelected: handleSelectedPopupMenuButton,
           icon: const Icon(Icons.more_vert),
           itemBuilder: (_) => [
             const PopupMenuItem(
@@ -133,5 +119,21 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         ),
       ],
     );
+  }
+
+  void handleSelectedPopupMenuButton(FilterOptions filterOption) {
+    switch (filterOption) {
+      case FilterOptions.favorites:
+        setState(() {
+          isShowFavoritesOnly = true;
+        });
+        break;
+      case FilterOptions.all:
+      default:
+        setState(() {
+          isShowFavoritesOnly = false;
+        });
+        break;
+    }
   }
 }
