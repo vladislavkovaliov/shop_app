@@ -5,8 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:shop_app/config.dart';
 import 'package:shop_app/keys.dart';
 
-Uri baseAuthUrlWithWebApiToken =
-    Uri.parse(baseAuthUrl.replaceAll('[API_KEY]', webApiToken));
+enum AuthenticateMethod {
+  Signup,
+  Signin,
+}
+
+Uri baseAuthUrlSignUpWithWebApiToken =
+    Uri.parse(baseAuthUrlSignUp.replaceAll('[API_KEY]', webApiToken));
+Uri baseAuthUrlSignInWithWebApiToken =
+    Uri.parse(baseAuthUrlSignIn.replaceAll('[API_KEY]', webApiToken));
 
 class Auth with ChangeNotifier {
   String? _token;
@@ -15,18 +22,33 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
 
   Future<void> signUp(String email, String password) async {
+    return _authenticate(email, password, AuthenticateMethod.Signup);
+  }
+
+  Future<void> _authenticate(
+    String email,
+    String password,
+    AuthenticateMethod method,
+  ) async {
     try {
+      final url = method == AuthenticateMethod.Signin
+          ? baseAuthUrlSignInWithWebApiToken
+          : baseAuthUrlSignUpWithWebApiToken;
+
       final response = await http.post(
-        baseAuthUrlWithWebApiToken,
+        url,
         body: json.encode({
           'email': email,
           'password': password,
           'returnSecureToken': true,
         }),
       );
-      print(json.decode(response.body));
     } catch (error) {
       throw error;
     }
+  }
+
+  Future<void> signIn(String email, String password) async {
+    return _authenticate(email, password, AuthenticateMethod.Signin);
   }
 }
