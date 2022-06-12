@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart/cart.dart';
 import 'package:shop_app/providers/products/product.dart';
-
 import 'package:shop_app/screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
@@ -19,8 +18,24 @@ class ProductItem extends StatelessWidget {
     );
   }
 
-  void handleFavoriteToggle(Product product) {
-    product.toggleFavoriteStatus();
+  Future<void> handleFavoriteToggle(
+    ScaffoldMessengerState scaffold,
+    Product product,
+  ) async {
+    try {
+      await product.toggleFavoriteStatus();
+    } catch (error) {
+      scaffold.hideCurrentSnackBar();
+      scaffold.showSnackBar(
+        SnackBar(
+          content: Text(
+            error.toString(),
+            textAlign: TextAlign.center,
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void handleShoppingCard(
@@ -74,6 +89,7 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           leading: Consumer<Product>(
             builder: (ctx, product, child) => buildIconButton(
+              scaffold,
               product,
               theme,
               product.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -114,13 +130,14 @@ class ProductItem extends StatelessWidget {
   }
 
   IconButton buildIconButton(
+    ScaffoldMessengerState scaffold,
     Product product,
     ThemeData theme,
     IconData icon,
     Function onPressed,
   ) {
     return IconButton(
-      onPressed: () => onPressed(product),
+      onPressed: () => onPressed(scaffold, product),
       icon: Icon(icon),
       color: theme.colorScheme.secondary,
     );
