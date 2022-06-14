@@ -30,7 +30,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProduct() async {
-    var url = Uri.parse(baseUrl + 'products.json?auth=$authToken');
+    var url = Uri.parse(baseUrl +
+        'products.json?auth=$authToken&orderBy="userId"&equalTo="$userId"');
 
     try {
       final response = await http.get(url);
@@ -54,7 +55,7 @@ class Products with ChangeNotifier {
           description: prodValue['description'],
           price: prodValue['price'],
           isFavorite:
-              favoriteData == null ? false : favoriteData[prodId]['isFavorite'],
+              favoriteData == null ? false : favoriteData[prodId] ?? false,
           imageUrl: prodValue['imageUrl'],
         ));
       });
@@ -79,6 +80,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'userId': userId,
           },
         ),
       );
@@ -107,7 +109,10 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String productId, Product product) async {
+  Future<void> updateProduct(
+    String productId,
+    Product product,
+  ) async {
     final productIdx = _items.indexWhere((x) => x.id == productId);
 
     if (productIdx >= 0) {

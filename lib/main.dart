@@ -10,7 +10,7 @@ import 'package:shop_app/screens/product_detail_screen.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
 import 'package:shop_app/providers/products/products.dart';
 import 'package:shop_app/providers/cart/cart.dart';
-import 'package:shop_app/screens/user_products.dart';
+import 'package:shop_app/screens/user_products_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -121,17 +121,21 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   }
 
   void handleSelectedPopupMenuButton(FilterOptions filterOption) {
+    // final productContainer = Provider.of<Products>(context);
+
     switch (filterOption) {
       case FilterOptions.favorites:
         setState(() {
           isShowFavoritesOnly = true;
         });
+        // productContainer.showFavoriteOlny();
         break;
       case FilterOptions.all:
       default:
         setState(() {
           isShowFavoritesOnly = false;
         });
+        // productContainer.showAll();
         break;
     }
   }

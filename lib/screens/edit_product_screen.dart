@@ -80,6 +80,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         return;
       }
 
+      // Need to call build() to update image of product
       setState(() {});
     }
   }
