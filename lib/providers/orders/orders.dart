@@ -40,7 +40,10 @@ class Orders with ChangeNotifier {
     try {
       final url = Uri.parse(baseUrl + 'orders.json?auth=$authToken');
       final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      var extractedData = {};
+
+      // if BE doesn't have data
+      extractedData = response.body == "null" ? {} : json.decode(response.body);
 
       final List<OrderItem> loadedOrders = [];
 
