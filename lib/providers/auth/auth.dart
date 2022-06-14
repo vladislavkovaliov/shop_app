@@ -82,11 +82,19 @@ class Auth with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
   Future<void> signIn(String email, String password) async {
     return _authenticate(email, password, AuthenticateMethod.Signin);
+  }
+
+  void signOut() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+
+    notifyListeners();
   }
 }
