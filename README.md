@@ -38,3 +38,4 @@ samples, guidance on mobile development, and a full API reference.
 | Auth Products | ![Alt Text](auth-products.gif) |
 | Logout | ![Alt Text](logout.gif) |
 | Manual Animation | ![Alt Text](manual-animation.gif) |
+| Product placeholder | ![Alt Text](placeholder-product.gif) |
