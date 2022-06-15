@@ -244,18 +244,23 @@ class _AuthCardState extends State<AuthCard>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: Container(
-        height: _heightAnimation.value.height,
-        constraints: BoxConstraints(
-          minHeight: _heightAnimation.value.height,
+      child: AnimatedBuilder(
+        animation: _heightAnimation,
+        builder: (ctx, ch) => Container(
+          height: _heightAnimation.value.height,
+          constraints: BoxConstraints(
+            minHeight: _heightAnimation.value.height,
+          ),
+          width: deviceSize.width * 0.75,
+          padding: const EdgeInsets.all(16.0),
+          child: ch,
         ),
-        width: deviceSize.width * 0.75,
-        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
