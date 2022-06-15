@@ -41,3 +41,4 @@ samples, guidance on mobile development, and a full API reference.
 | Product placeholder | ![Alt Text](placeholder-product.gif) |
 | Adding Hero | ![Alt Text](hero.gif) |
 | Auto Login | ![Alt Text](auto-login.gif) |
+| Animate Orders | ![Alt Text](animate-orders.gif) |
