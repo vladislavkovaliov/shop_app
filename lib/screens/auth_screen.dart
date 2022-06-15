@@ -331,26 +331,37 @@ class _AuthCardState extends State<AuthCard>
                   if (_isLoading)
                     const CircularProgressIndicator()
                   else
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text(
                           _authMode == AuthMode.login ? 'LOGIN' : 'SIGN UP'),
                       onPressed: _submit,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30.0,
+                          vertical: 8.0,
+                        ),
+                        textStyle: const TextStyle(color: Colors.white),
+                        primary: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  TextButton(
+                    child: Text(
+                        '${_authMode == AuthMode.login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                    onPressed: _switchAuthMode,
+                    style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                        horizontal: 30.0,
+                        vertical: 4.0,
+                      ),
+                      textStyle:
+                          TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                  FlatButton(
-                    child: Text(
-                        '${_authMode == AuthMode.login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
-                    onPressed: _switchAuthMode,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 4),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    textColor: Theme.of(context).primaryColor,
                   ),
                 ],
               ),
