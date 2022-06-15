@@ -1,9 +1,10 @@
 {
     "configurations": [
+
         {
             "name": "Flutter (iPhone 11)",
             "program": "lib/main.dart",
-            "deviceId": "0B970BD9-4410-4E68-B3E5-46F43BA02516",
+            "deviceId": "FB7204A3-10A1-4845-AE62-9898FDB6BF12",
             "request": "launch",
             "type": "dart"
         }

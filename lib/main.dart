@@ -10,6 +10,7 @@ import 'package:shop_app/screens/product_detail_screen.dart';
 import 'package:shop_app/screens/products_overview_screen.dart';
 import 'package:shop_app/providers/products/products.dart';
 import 'package:shop_app/providers/cart/cart.dart';
+import 'package:shop_app/screens/splash_screen.dart';
 import 'package:shop_app/screens/user_products_screen.dart';
 
 void main() {
@@ -60,9 +61,21 @@ class MyApp extends StatelessWidget {
                 secondary: Colors.deepOrange,
               ),
             ),
-            initialRoute: auth.isAuth
-                ? ProductOverviewScreen.routeName
-                : AuthScreen.routeName,
+            home: auth.isAuth
+                ? const ProductOverviewScreen()
+                : FutureBuilder(
+                    future: auth.tryAutoSignIn(),
+                    builder: (ctx, authResultSnapshot) {
+                      if (authResultSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const SplashScreen();
+                      }
+                      return const AuthScreen();
+                    },
+                  ),
+            // initialRoute: auth.isAuth
+            //     ? ProductOverviewScreen.routeName
+            //     : AuthScreen.routeName,
             routes: buildRoutes,
           );
         },

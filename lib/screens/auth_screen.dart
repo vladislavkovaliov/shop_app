@@ -7,7 +7,7 @@ import 'package:shop_app/providers/auth/auth.dart';
 
 import 'package:shop_app/screens/products_overview_screen.dart';
 
-enum AuthMode { Signup, Login }
+enum AuthMode { signup, login }
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -32,7 +32,7 @@ class AuthScreen extends StatelessWidget {
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0, 1],
+                stops: const [0, 1],
               ),
             ),
           ),
@@ -76,7 +76,7 @@ class AuthScreen extends StatelessWidget {
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
-                    child: AuthCard(),
+                    child: const AuthCard(),
                   ),
                 ],
               ),
@@ -100,7 +100,7 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  AuthMode _authMode = AuthMode.Login;
+  AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -109,9 +109,9 @@ class _AuthCardState extends State<AuthCard>
 
   bool _isLoading = false;
 
-  var _controller;
-  var _slideAnimation;
-  var _opacityAnimation;
+  AnimationController? _controller;
+  Animation<Offset>? _slideAnimation;
+  Animation<double>? _opacityAnimation;
 
   @override
   void initState() {
@@ -127,25 +127,20 @@ class _AuthCardState extends State<AuthCard>
       end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: _controller!,
         curve: Curves.fastOutSlowIn,
       ),
     );
-
-    // _slideAnimation.addListener(() {
-    //   setState(() {});
-    // });
 
     _opacityAnimation = Tween(
       begin: 0.0,
       end: 1.0,
     ).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: _controller!,
         curve: Curves.easeIn,
       ),
     );
-    ;
   }
 
   void _showErrorDialon(String message) {
@@ -176,7 +171,7 @@ class _AuthCardState extends State<AuthCard>
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.Login) {
+      if (_authMode == AuthMode.login) {
         await Provider.of<Auth>(context, listen: false).signIn(
           _authData['email'].toString(),
           _authData['password'].toString(),
@@ -226,14 +221,14 @@ class _AuthCardState extends State<AuthCard>
   }
 
   void _switchAuthMode() {
-    if (_authMode == AuthMode.Login) {
-      updateAuthMode(AuthMode.Signup);
+    if (_authMode == AuthMode.login) {
+      updateAuthMode(AuthMode.signup);
 
-      _controller.forward();
+      _controller!.forward();
     } else {
-      updateAuthMode(AuthMode.Login);
+      updateAuthMode(AuthMode.login);
 
-      _controller.reverse();
+      _controller!.reverse();
     }
   }
 
@@ -247,7 +242,7 @@ class _AuthCardState extends State<AuthCard>
   void dispose() {
     super.dispose();
 
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   @override
@@ -262,11 +257,11 @@ class _AuthCardState extends State<AuthCard>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.signup ? 320 : 260,
         child: Container(
           // height: _slideAnimation.value.height,
           constraints: BoxConstraints(
-              minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+              minHeight: _authMode == AuthMode.signup ? 320 : 260),
           width: deviceSize.width * 0.75,
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -304,25 +299,26 @@ class _AuthCardState extends State<AuthCard>
                   ),
                   AnimatedContainer(
                     constraints: BoxConstraints(
-                      minHeight: _authMode == AuthMode.Signup ? 60 : 0,
-                      maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
+                      minHeight: _authMode == AuthMode.signup ? 60 : 0,
+                      maxHeight: _authMode == AuthMode.signup ? 120 : 0,
                     ),
                     curve: Curves.easeIn,
                     duration: const Duration(milliseconds: 300),
                     child: FadeTransition(
                       opacity: _opacityAnimation as Animation<double>,
                       child: SlideTransition(
-                        position: _slideAnimation,
+                        position: _slideAnimation!,
                         child: TextFormField(
-                          enabled: _authMode == AuthMode.Signup,
+                          enabled: _authMode == AuthMode.signup,
                           decoration: const InputDecoration(
                               labelText: 'Confirm Password'),
                           obscureText: true,
-                          validator: _authMode == AuthMode.Signup
+                          validator: _authMode == AuthMode.signup
                               ? (value) {
                                   if (value != _passwordController.text) {
                                     return 'Passwords do not match!';
                                   }
+                                  return null;
                                 }
                               : null,
                         ),
@@ -337,7 +333,7 @@ class _AuthCardState extends State<AuthCard>
                   else
                     RaisedButton(
                       child: Text(
-                          _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                          _authMode == AuthMode.login ? 'LOGIN' : 'SIGN UP'),
                       onPressed: _submit,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -349,7 +345,7 @@ class _AuthCardState extends State<AuthCard>
                     ),
                   FlatButton(
                     child: Text(
-                        '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                        '${_authMode == AuthMode.login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
                     onPressed: _switchAuthMode,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30.0, vertical: 4),
