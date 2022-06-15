@@ -84,11 +84,14 @@ class ProductItem extends StatelessWidget {
       child: GridTile(
         child: GestureDetector(
           onTap: () => handleTap(context, product.id.toString()),
-          child: FadeInImage(
-            placeholder:
-                const AssetImage('assets/images/product-placeholder.png'),
-            image: NetworkImage(product.imageUrl),
-            fit: BoxFit.fill,
+          child: Hero(
+            tag: product.id.toString(),
+            child: FadeInImage(
+              placeholder:
+                  const AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(

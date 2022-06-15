@@ -39,3 +39,4 @@ samples, guidance on mobile development, and a full API reference.
 | Logout | ![Alt Text](logout.gif) |
 | Manual Animation | ![Alt Text](manual-animation.gif) |
 | Product placeholder | ![Alt Text](placeholder-product.gif) |
+| Adding Hero | ![Alt Text](hero.gif) |
