@@ -73,9 +73,6 @@ class MyApp extends StatelessWidget {
                       return const AuthScreen();
                     },
                   ),
-            // initialRoute: auth.isAuth
-            //     ? ProductOverviewScreen.routeName
-            //     : AuthScreen.routeName,
             routes: buildRoutes,
           );
         },
