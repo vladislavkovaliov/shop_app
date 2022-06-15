@@ -37,3 +37,4 @@ samples, guidance on mobile development, and a full API reference.
 | Handling Errors | ![Alt Text](handling-error.gif) |
 | Auth Products | ![Alt Text](auth-products.gif) |
 | Logout | ![Alt Text](logout.gif) |
+| Manual Animation | ![Alt Text](manual-animation.gif) |
